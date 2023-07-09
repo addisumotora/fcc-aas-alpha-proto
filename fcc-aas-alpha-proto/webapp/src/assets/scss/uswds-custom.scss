@@ -1,0 +1,213 @@
+/*
+----------------------------------------
+Custom USWDS Class Changes
+----------------------------------------
+Update class stylings from USWDS.
+Add any predefined classes here that will be 
+universal/reused among the myTTB application.
+----------------------------------------
+*/
+
+.usa-button {
+  color: $theme-color-paper;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.usa-button:hover {
+  color: $theme-color-paper;
+}
+.usa-button--outline {
+  color: $theme-color-primary;
+}
+.usa-button--outline:hover {
+  color: $theme-color-primary-dark;
+}
+.usa-button--outline:disabled:hover {
+  color: #afafaf;
+}
+.usa-card__container {
+  border: 1px solid #a6a6a6;
+  border-radius: 4px;
+}
+
+.usa-card__heading {
+  font-size: 28px;
+
+  h2 {
+    align-items: center;
+    display: flex;
+  }
+
+  img {
+    margin-right: 16px;
+  }
+}
+
+// .usa-card__header,
+// .usa-card__body,
+// .usa-card__footer,
+// .usa-card:not(.usa-card--flag) .usa-card__container > :only-child {
+//   padding: 16px;
+// }
+.usa-card__body {
+  padding: 8px 16px;
+}
+.usa-card__body > button:last-child {
+  padding-bottom: 12px;
+}
+.usa-card__header {
+  padding: 16px 16px 8px;
+}
+.usa-card__footer {
+  padding: 8px 16px;
+}
+
+.usa-error-message {
+  color: $theme-color-error;
+}
+.usa-form-group--error {
+  border-left-width: 0;
+  padding-left: 0;
+  margin-left: 0;
+}
+.usa-input--error {
+  border-color: $theme-color-error;
+}
+.usa-label {
+  margin-top: 16px;
+}
+.usa-nav__primary-item .usa-nav__submenu:last-child {
+  right: 0;
+}
+
+/*
+----------------------------------------
+Alerts
+----------------------------------------
+*/
+
+/* TODO: create uswds custom folder with subfolders */
+.usa-alert {
+  padding: 16px 16px 16px 24px;
+  background-size: 20px 20px;
+  background-position-y: 15px;
+  margin-bottom: 32px;
+
+  .usa-alert__body {
+    padding: 0px 20px 0px 30px;
+    background-color: inherit;
+    h4 {
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+    p {
+      margin: 0;
+    }
+  }
+}
+
+.usa-alert__heading {
+  line-height: 24px;
+}
+
+.usa-alert__body::before {
+  mask-size: 24px !important;
+  top: -0.6rem !important;
+  left: -0.6rem !important;
+}
+
+// info
+.usa-alert--info {
+  border-left-color: $theme-color-primary-dark;
+}
+.usa-alert--info .usa-alert__body::before {
+  background-color: $theme-color-primary-dark;
+}
+
+// error
+.usa-alert--error {
+  background-color: $theme-color-error-lightest;
+}
+.usa-alert--error .usa-alert__body::before {
+  background-color: $theme-color-error;
+}
+
+// warning
+.usa-alert--warning {
+  background-color: #faf3d1;
+}
+.usa-alert--warning .usa-alert__body::before {
+  background-color: $theme-color-warning;
+}
+
+// success
+.usa-alert--success .usa-alert__body::before {
+  background-color: $theme-color-secondary-dark;
+}
+
+// slim
+.usa-alert.usa-alert--slim {
+  background-position-y: 19px;
+
+  .usa-alert__text {
+    padding-top: 0;
+  }
+  .usa-alert__heading {
+    display: none;
+  }
+}
+.usa-alert--slim .usa-alert__body::before {
+  top: 0rem !important;
+  left: -0.1rem !important;
+}
+
+// no icon
+.usa-alert--no-icon {
+  padding-left: 0;
+}
+
+.grid-container {
+  padding: 0;
+}
+
+.usa-card:not(.usa-card--flag) .usa-card__container > :only-child {
+  padding: 32px;
+}
+
+.usa-card:last-child {
+  margin-bottom: 32px;
+}
+
+.usa-checkbox__label::before {
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 850px) {
+  .usa-card__header > :only-child,
+  .usa-card__body > :only-child {
+    padding-bottom: inherit;
+    padding-top: inherit;
+  }
+  .usa-card:not(.usa-card--flag) .usa-card__container > :only-child {
+    padding: 8px;
+  }
+  .usa-section {
+    padding-top: 32px;
+  }
+}
+
+@media (min-width: 64em) {
+  .usa-nav__submenu {
+    width: auto;
+    min-width: 15rem;
+    max-width: 20rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .usa-section {
+    padding-bottom: 4rem;
+  }
+}

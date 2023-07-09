@@ -1,0 +1,280 @@
+/*
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+========================================
+========================================
+========================================
+*/
+
+// -------------------------------------
+// Import individual theme settings
+
+@import 'uswds/uswds-theme-general';
+@import 'uswds/uswds-theme-typography';
+@import 'uswds/uswds-theme-spacing';
+@import 'uswds/uswds-theme-color';
+@import 'uswds/uswds-theme-utilities';
+
+// components import needs to be last
+@import 'uswds/uswds-theme-components';
+
+// -------------------------------------
+// Import individual USWDS packages...
+// See https://designsystem.digital.gov/components/
+
+// First import required and global packages...
+// @import 'packages/required';
+// @import 'packages/global';
+
+// Then import individual component packages...
+// @import 'packages/form-controls';
+// @import 'packages/form-templates';
+// @import 'packages/layout-grid';
+// @import 'packages/typography';
+// @import 'packages/validation';
+// @import 'packages/usa-accordion';
+// @import 'packages/usa-alert';
+// @import 'packages/usa-identifier';
+// @import 'packages/usa-banner';
+// @import 'packages/usa-breadcrumb';
+// @import 'packages/usa-button';
+// @import 'packages/usa-button-group';
+// @import 'packages/usa-card';
+// @import 'packages/usa-checklist';
+// @import 'packages/usa-footer';
+// @import 'packages/usa-header';
+// @import 'packages/usa-hero';
+// @import 'packages/usa-identifier';
+// @import 'packages/usa-layout';
+// @import 'packages/usa-media-block';
+// @import 'packages/usa-megamenu';
+// @import 'packages/usa-nav-container';
+// @import 'packages/usa-nav';
+// @import 'packages/usa-navbar';
+// @import 'packages/usa-search';
+// @import 'packages/usa-section';
+// @import 'packages/usa-sidenav';
+// @import 'packages/usa-skipnav';
+// @import 'packages/usa-step-indicator';
+// @import 'packages/usa-table';
+// @import 'packages/usa-tag';
+
+// or package sets...
+// @import 'packages/uswds-components';
+// @import 'packages/uswds-utilities';
+
+// -------------------------------------
+// ...or import the complete USWDS kit
+
+@import 'uswds';
+
+// -------------------------------------
+// Import theme custom styles
+
+@import './mixin-override.scss';
+
+@import 'uswds/uswds-theme-custom-styles';
+
+html,
+body {
+  font: normal normal normal 16px/24px Public Sans Web;
+}
+
+h1 {
+  font: normal normal 300 40px/46px Merriweather Web;
+  margin: 0 0 32px;
+}
+
+h2 {
+  font: normal normal 300 28px/36px Merriweather Web;
+}
+
+h3 {
+  font: normal normal bold 24px/36px Public Sans Web;
+  margin: 32px 0;
+}
+
+h4 {
+  font: normal normal bold 20px/32px Public Sans Web;
+  margin: 0 0 16px;
+}
+
+h5 {
+  font: normal normal 600 18px/32px Public Sans Web;
+}
+
+button,
+h6 {
+  font: normal normal 400 16px/26px Public Sans Web;
+}
+
+a {
+  text-decoration: none !important;
+  color: $theme-color-primary;
+
+  img {
+    padding-left: 4px;
+  }
+}
+
+a:visited {
+  color: #54278f;
+}
+
+img,
+svg {
+  vertical-align: middle;
+}
+
+@media (max-width: 375px) {
+  h1 {
+    font: normal normal 300 28px/36px Merriweather;
+    margin: 0 0 24px;
+  }
+}
+
+// recaptcha TODO: create separate component?
+.recaptcha-wrapper {
+  margin-top: 32px;
+}
+
+.recaptcha-error {
+  margin-left: -20px;
+  padding-left: 20px;
+  border-left-width: 0;
+}
+
+.recaptcha-error .g-recaptcha {
+  width: 310px;
+}
+
+@media (max-width: 433px) {
+  .recaptcha-error .g-recaptcha {
+    width: 166px;
+  }
+}
+
+@import './uswds-custom.scss';
+
+/** Imports and adjustments for Bootstrap modal */
+// @import '~bootstrap/scss/functions';
+// @import '~bootstrap/scss/variables';
+// @import '~bootstrap/scss/mixins';
+// @import '~bootstrap/scss/maps';
+// @import '~bootstrap/scss/root';
+// @import '~bootstrap/scss/utilities';
+// @import '~bootstrap/scss/modal';
+
+// centering modal box in viewport
+.modal-dialog {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+  min-height: calc(100vh - 60px);
+}
+
+@media (max-width: 767px) {
+  .modal-dialog {
+    min-height: calc(100vh - 20px);
+  }
+}
+
+//accordion
+.usa-accordion--bordered .usa-accordion__content {
+  border-bottom: 0.25rem solid $theme-color-base-lightest;
+  border-left: 0.25rem solid $theme-color-base-lightest;
+  border-right: 0.25rem solid $theme-color-base-lightest;
+  overflow: visible;
+}
+
+.usa-accordion__button {
+  background-color: $theme-color-base-lightest;
+}
+
+hr {
+  margin-top: 32px;
+  margin-bottom: 32px;
+  border-color: $theme-color-base-lightest;
+  margin-left: 0;
+}
+
+//spacing between buttons in a group
+@media (min-width: 600px) {
+  .usa-button-group__item {
+    margin: 0 20px 0 0;
+
+    .usa-button {
+      min-width: 154px;
+    }
+  }
+}
+
+// Phone Flag Styles
+.flag-box {
+  position: absolute;
+  z-index: 9999;
+  width: 50px !important;
+  max-width: 50px !important;
+
+  .usa-combo-box__list {
+    width: 350px !important;
+  }
+
+  .usa-combo-box__clear-input__wrapper,
+  .usa-combo-box__toggle-list,
+  .usa-combo-box__input-button-separator {
+    display: none !important;
+  }
+
+  .usa-combo-box__input {
+    margin-top: 8px;
+    border-right: none;
+  }
+
+  input {
+    color: transparent;
+  }
+
+  input[aria-expanded='false'] {
+    background-color: transparent;
+    margin-top: 0px;
+    border: none;
+    padding-right: 0px;
+    width: 50px;
+  }
+
+  input[aria-expanded='true'] {
+    background-color: transparent;
+    margin-top: 0px;
+    border: none;
+    padding-right: 0px;
+    width: 50px;
+  }
+}
+
+#flaglist {
+  margin-top: 9px;
+  height: 40px;
+  border: 0;
+  margin-left: 1px;
+  border-right: 1px solid;
+}
+
+.flag-box {
+  .usa-combo-box__list-option--no-results {
+    display: none !important;
+  }
+}
+
+html {
+  visibility: visible;
+  opacity: 1;
+}
+
+a:hover {
+  cursor: pointer;
+}
+

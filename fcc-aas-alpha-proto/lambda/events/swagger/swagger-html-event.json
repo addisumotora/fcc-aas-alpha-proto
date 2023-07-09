@@ -1,0 +1,12 @@
+{ 
+    "httpMethod": "GET", 
+    "path": "/docs/file/:file",
+    "pathParameters": { 
+        "file": "swagger.html" 
+    },
+    "requestContext": {
+        "apiId": "test-swagger-api-id",
+        "domainName": "o0bu6wt6rj.execute-api.us-east-1.amazonaws.com",
+        "stage": "Prod"
+    }
+} 

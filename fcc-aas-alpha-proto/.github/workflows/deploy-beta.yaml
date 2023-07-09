@@ -1,0 +1,13 @@
+name: Deploy to Beta
+
+on:
+  push:
+    branches: [beta]
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      region: us-east-1
+      stack_name: fcc-aas-beta
+    secrets: inherit

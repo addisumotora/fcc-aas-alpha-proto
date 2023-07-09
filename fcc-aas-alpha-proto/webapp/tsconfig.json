@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    
+    "baseUrl": "./",
+    "paths": {
+      "rxjs/*": ["node_modules/rxjs/*"],
+      "@uswds": ["node_modules/@uswds/uswds/packages/uswds-core/src/js/index.js"],
+      "src/*": ["src/*"]
+    },
+    "outDir": "./target/classes/static/app",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2022",
+    "module": "es2022",
+    "lib": ["es2022", "dom"]
+  },
+  "angularCompilerOptions": {
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true,
+    "preserveWhitespaces": true
+  }
+}
+

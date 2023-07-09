@@ -1,0 +1,39 @@
+.summary-container {
+    padding: 20px;
+    width: 80%;
+    margin: auto;
+  }
+  .us-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .us-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  ul li {
+    list-style: none;
+  }
+
+  .item{
+    display: flex;
+    gap: 1rem;
+  }
+
+  .format{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 2rem;
+    margin-bottom: 1rem;
+}
+.btns-left {
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+  }

@@ -1,0 +1,621 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  FCC AAS serverless application.
+
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Tracing: Active
+
+  Api:
+    TracingEnabled: true
+
+Parameters:
+  DBName:
+    Description: 'Aurora RDS database name'
+    Type: String
+    Default: 'dbaurora'
+
+  DBMasterUserName:
+    AllowedPattern: '[a-zA-Z0-9_]+'
+    ConstraintDescription: must be between 1 to 16 alphanumeric characters.
+    Description: The database admin account user name, between 1 to 16 alphanumeric characters.
+    MaxLength: 16
+    MinLength: 1
+    Type: String
+    Default: dbadmin
+
+Resources:
+  GetSwaggerFileFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: 'ES2021'
+        EntryPoints:
+          - lambda/src/handlers/swagger/index.ts
+    Properties:
+      Handler: lambda/src/handlers/swagger/index.getSwaggerFileHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Timeout: 600
+      Description: Return Swagger documentation files.
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - apigateway:*
+              Resource: '*'
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /api/docs/{file}
+            Method: GET
+            RestApiId: !Ref RESTAPI
+          
+  InitializeDatabaseFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: 'ES2021'
+        EntryPoints:
+          - lambda/src/handlers/database/index.ts
+    Properties:
+      Handler: lambda/src/handlers/database/index.initializeDatabaseHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Timeout: 600
+      Description: Initialize the postgres database.
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - apigateway:*
+                - rds-data:*
+                - secretsmanager:*
+              Resource: '*'
+      Environment:
+        Variables:
+          DB_CLUSTER_ARN: !GetAtt RDSCluster.DBClusterArn
+          DB_SECRET_ARN: !Ref DBSecret
+          DB_NAME: !Ref DBName
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /api/dbinit
+            Method: GET
+            RestApiId: !Ref RESTAPI
+
+  PostItemFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: 'ES2021'
+        EntryPoints:
+          - lambda/src/handlers/items/index.ts
+    Properties:
+      Handler: lambda/src/handlers/items/index.postItemHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Timeout: 600
+      Description: Posts an item to postgres.
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - apigateway:*
+                - rds-data:*
+                - secretsmanager:*
+              Resource: '*'
+      Environment:
+        Variables:
+          DB_CLUSTER_ARN: !GetAtt RDSCluster.DBClusterArn
+          DB_SECRET_ARN: !Ref DBSecret
+          DB_NAME: !Ref DBName
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /api/item
+            Method: POST
+            RestApiId: !Ref RESTAPI
+
+  GetItemByIdFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: 'ES2021'
+        EntryPoints:
+          - lambda/src/handlers/items/index.ts
+    Properties:
+      Handler: lambda/src/handlers/items/index.getItemByIdHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Timeout: 600
+      Description: Returns a specific item from postgres.
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - apigateway:*
+                - rds-data:*
+                - secretsmanager:*
+              Resource: '*'
+      Environment:
+        Variables:
+          DB_CLUSTER_ARN: !GetAtt RDSCluster.DBClusterArn
+          DB_SECRET_ARN: !Ref DBSecret
+          DB_NAME: !Ref DBName
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /api/item/{itemId}
+            Method: GET
+            RestApiId: !Ref RESTAPI
+
+  putItemByIdFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: 'ES2021'
+        EntryPoints:
+          - lambda/src/handlers/items/index.ts
+    Properties:
+      Handler: lambda/src/handlers/items/index.putItemHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Timeout: 600
+      Description: Updates a specific item from postgres.
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - apigateway:*
+                - rds-data:*
+                - secretsmanager:*
+              Resource: '*'
+      Environment:
+        Variables:
+          DB_CLUSTER_ARN: !GetAtt RDSCluster.DBClusterArn
+          DB_SECRET_ARN: !Ref DBSecret
+          DB_NAME: !Ref DBName
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /api/item
+            Method: PUT
+            RestApiId: !Ref RESTAPI
+
+  DeleteItemByIdFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: 'ES2021'
+        EntryPoints:
+          - lambda/src/handlers/items/index.ts
+    Properties:
+      Handler: lambda/src/handlers/items/index.deleteItemByIdHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Timeout: 600
+      Description: Deletes a specific item from postgres.
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - apigateway:*
+                - rds-data:*
+                - secretsmanager:*
+              Resource: '*'
+      Environment:
+        Variables:
+          DB_CLUSTER_ARN: !GetAtt RDSCluster.DBClusterArn
+          DB_SECRET_ARN: !Ref DBSecret
+          DB_NAME: !Ref DBName
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /api/item/{itemId}
+            Method: DELETE
+            RestApiId: !Ref RESTAPI
+
+  DataInputCSVtoSQSfromS3Function:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: 'ES2021'
+        EntryPoints:
+          - lambda/src/handlers/data-processing/index.ts
+    Properties:
+      Handler: lambda/src/handlers/data-processing/index.dataInputCSVtoSQSfromS3Handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Timeout: 600
+      Description: Read csv file from S3 and insert records to SQS queue.
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - sqs:*
+                - s3:*
+              Resource: '*'
+      Environment:
+        Variables:
+          ItemsSQSQueue: !Ref ItemsSQSQueue
+      Events:
+        DataInputCSVfromS3Event:
+          Type: S3
+          Properties:
+            Bucket: !Ref DataPipelineBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: '.csv'
+
+  DataProcessItemsFromSQSFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: 'ES2021'
+        EntryPoints:
+          - lambda/src/handlers/data-processing/index.ts
+    Properties:
+      Handler: lambda/src/handlers/data-processing/index.dataProcessItemsFromSQSHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Timeout: 600
+      Description: Process SQS events and insert employee records to Postgres.
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - sqs:*
+                - rds-data:*
+                - secretsmanager:*
+              Resource: '*'
+      Environment:
+        Variables:
+          ItemsSQSQueue: !Ref ItemsSQSQueue
+          DB_CLUSTER_ARN: !GetAtt RDSCluster.DBClusterArn
+          DB_SECRET_ARN: !Ref DBSecret
+          DB_NAME: !Ref DBName
+      Events:
+        MySQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt ItemsSQSQueue.Arn
+            BatchSize: 5
+
+  RESTAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub ${AWS::StackName}-RESTAPI
+      StageName: Prod
+      BinaryMediaTypes:
+        - '*/*'
+
+  DataPipelineBucket:
+    Type: AWS::S3::Bucket
+
+  ItemsSQSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 900
+
+  DBSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub '${AWS::StackName}-DBSecret'
+      Description: Aurora database auto-generated user password
+      GenerateSecretString:
+        SecretStringTemplate: !Sub '{"username": "${DBMasterUserName}"}'
+        GenerateStringKey: 'password'
+        PasswordLength: 30
+        ExcludeCharacters: '"@/\'
+
+  RDSCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      DBClusterIdentifier: !Sub '${AWS::StackName}-RDSCluster'
+      MasterUsername: !Join ['', ['{{resolve:secretsmanager:', !Ref DBSecret, ':SecretString:username}}']]
+      MasterUserPassword: !Join ['', ['{{resolve:secretsmanager:', !Ref DBSecret, ':SecretString:password}}']]
+      DatabaseName: !Ref DBName
+      EnableHttpEndpoint: true
+      Engine: aurora-postgresql
+      EngineMode: serverless
+      ScalingConfiguration:
+        AutoPause: False
+
+  ApiCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name: !Sub '${AWS::StackName}-${AWS::Region}'
+        Comment: 'Cache policy for /api behavior in CloudFront Distribution'
+        DefaultTTL: 0
+        MaxTTL: 1
+        MinTTL: 0
+        ParametersInCacheKeyAndForwardedToOrigin:
+          CookiesConfig:
+            CookieBehavior: all
+          EnableAcceptEncodingBrotli: false
+          EnableAcceptEncodingGzip: false
+          HeadersConfig:
+            HeaderBehavior: whitelist
+            Headers:
+              - Authorization
+          QueryStringsConfig:
+            QueryStringBehavior: all
+
+  AppS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  AppS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref AppS3Bucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: 's3:GetObject'
+            Resource:
+              - !Sub 'arn:aws:s3:::${AppS3Bucket}/*'
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}
+
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Comment: 'Cloudfront distribution for serverless website'
+        DefaultRootObject: 'index.html'
+        Enabled: true
+        HttpVersion: http2
+        Origins:
+          - Id: s3-website
+            DomainName: !GetAtt AppS3Bucket.DomainName
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+            OriginAccessControlId: !GetAtt CloudFrontOriginAccessControl.Id
+          - Id: lambda-apis
+            DomainName: !Sub '${RESTAPI}.execute-api.${AWS::Region}.amazonaws.com'
+            OriginPath: /Prod
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols:
+                - TLSv1.2
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+        # To connect the CDN to the origins you need to specify behaviours
+        DefaultCacheBehavior:
+          Compress: 'true'
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+            - PUT
+            - POST
+            - PATCH
+            - DELETE
+          TargetOriginId: s3-website
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 #CachingOptimized
+          OriginRequestPolicyId: 88a5eaf4-2fd4-4709-b370-b4c650ea3fcf #CORS-S3Origin
+          ResponseHeadersPolicyId: eaab4381-ed33-4a86-88ca-d9558dc6cd63 #CORS-with-preflight-and-SecurityHeadersPolicy
+        CacheBehaviors:
+          - PathPattern: /api/*
+            TargetOriginId: lambda-apis
+            ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: !Ref ApiCachePolicy
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
+              - POST
+              - PATCH
+              - DELETE
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 200
+            ErrorCachingMinTTL: 10
+            ResponsePagePath: /index.html
+          - ErrorCode: 404
+            ResponseCode: 200
+            ErrorCachingMinTTL: 10
+            ResponsePagePath: /index.html
+
+  CloudFrontOriginAccessControl:
+    Type: 'AWS::CloudFront::OriginAccessControl'
+    Properties:
+      OriginAccessControlConfig:
+        Description: 'Serverless website OA'
+        Name: !GetAtt AppS3Bucket.DomainName
+        OriginAccessControlOriginType: 's3'
+        SigningBehavior: 'always'
+        SigningProtocol: 'sigv4'
+
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Ref AWS::StackName
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: true
+      AutoVerifiedAttributes:
+        - email
+      UsernameAttributes:
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: false
+      EmailConfiguration:
+        EmailSendingAccount: COGNITO_DEFAULT
+
+  UserPoolAppClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub ${AWS::StackName}-app
+      UserPoolId: !Ref UserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      AllowedOAuthFlows:
+        - code
+      AllowedOAuthScopes:
+        - phone
+        - openid
+        - email
+        - profile
+      SupportedIdentityProviders:
+        - COGNITO
+      CallbackURLs:
+        - !Join ['', ['https://', !GetAtt CloudFrontDistribution.DomainName]]
+        - 'http://localhost:4200'
+      LogoutURLs:
+        - !Join ['', ['https://', !GetAtt CloudFrontDistribution.DomainName]]
+        - 'http://localhost:4200'
+      AllowedOAuthFlowsUserPoolClient: true
+        
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId: !Ref UserPool
+      Domain: !Select [0, !Split ['.', !GetAtt CloudFrontDistribution.DomainName]]
+
+Outputs:
+  StackName:
+    Description: Serverless Stack Name
+    Value: !Ref AWS::StackName
+    Export:
+      Name: !Sub ${AWS::StackName}-StackName
+
+  RESTEndpointProd:
+    Description: 'RESTAPI Gateway endpoint URL.'
+    Value: !Sub 'https://${RESTAPI}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
+
+  DBName:
+    Description: Aurora Database Name
+    Value: !Ref DBName
+
+  DBClusterArn:
+    Description: DBClusterArn
+    Value: !GetAtt RDSCluster.DBClusterArn
+
+  DBSecretArn:
+    Description: Aurora Secret ARN
+    Value: !Ref DBSecret
+
+  DBCluster:
+    Description: Aurora Cluster
+    Value: !Ref RDSCluster
+
+  DBClusterResourceId:
+    Description: DBClusterResourceId
+    Value: !GetAtt RDSCluster.DBClusterResourceId
+
+  DBURL:
+    Description: Aurora Database URL
+    Value: !GetAtt RDSCluster.Endpoint.Address
+
+  DBPort:
+    Description: Aurora Database Port
+    Value: !GetAtt RDSCluster.Endpoint.Port
+
+  DatabaseMasterUserName:
+    Description: Aurora Database User
+    Value: !Ref DBMasterUserName
+
+  UserPoolAppClient:
+    Description: User Pool App Client
+    Value: !Ref UserPoolAppClient
+
+  DataPipelineBucket:
+    Description: 'S3 Bucket for uploading data'
+    Value: !Ref DataPipelineBucket
+
+  WebEndpoint:
+    Description: 'Web Http endpoint URL'
+    Value: !Join ['', ['https://', !GetAtt CloudFrontDistribution.DomainName]]
+
+  AppS3Bucket:
+    Description: 'S3 Bucket hosting the web app'
+    Value: !Ref AppS3Bucket
+
+  CloudFrontDistribution:
+    Description: 'Cloudfront Distribution'
+    Value: !Ref CloudFrontDistribution
+
+  UserPoolId:
+    Description: 'Cognito User Pool'
+    Value: !Ref UserPool
+
+  UserPoolDomain:
+    Description: 'Cognito Hosted UI url'
+    Value:
+      !Join [
+        '',
+        [!Select [0, !Split ['.', !GetAtt CloudFrontDistribution.DomainName]], '.auth.', !Sub '${AWS::Region}', '.amazoncognito.com'],
+      ]
+

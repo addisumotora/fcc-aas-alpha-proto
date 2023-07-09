@@ -1,0 +1,37 @@
+#landing-page-hero {
+  background-color: #2C62A8;
+  height: 30rem;
+}
+
+.usa-hero__callout {
+  background-color: inherit;
+  color: #ffffff;
+}
+
+.fcc-button-alt {
+  background-color: #FFD34D;
+  color: #1C3664;
+}
+
+#temporary {
+  height: 60rem;
+}
+
+.grid-container {
+    height: 100%;
+    display: flex;
+}
+
+.usa-hero__callout {
+  align-self: center;
+
+  h1 {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 40em) {
+  .usa-hero__callout {
+    max-width: 30rem;
+  }
+}

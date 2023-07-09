@@ -1,0 +1,108 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "fcc-aas-alpha": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "aas",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "custom-webpack.config.js"
+            },
+            "outputPath": "dist/fcc-aas-alpha",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "allowedCommonJsDependencies": ["@uswds/uswds/packages"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@uswds/uswds/dist/img",
+                "output": "assets/img/"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@uswds/uswds/dist/fonts",
+                "output": "assets/fonts/"
+              }
+            ],
+            "styles": [
+              "src/assets/scss/global.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@uswds/uswds/dist/css/uswds.min.css"
+            ],
+            "scripts": [
+              "node_modules/@uswds/uswds/dist/js/uswds.min.js",
+              "node_modules/jquery/dist/jquery.min.js"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["./node_modules/@uswds/uswds/packages"]
+            }
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "fcc-aas-alpha:build:production"
+            },
+            "development": {
+              "browserTarget": "fcc-aas-alpha:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "fcc-aas-alpha:build"
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

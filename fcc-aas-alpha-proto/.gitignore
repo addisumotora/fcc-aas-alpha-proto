@@ -1,0 +1,6 @@
+node_modules
+.aws-sam
+coverage
+.DS_Store
+.angular
+dist

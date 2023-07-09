@@ -1,0 +1,6 @@
+{
+    "httpMethod": "GET",
+    "path": "/item",
+    "body": "ewogICAgInV1aWQiOiAiZWNhZTY5NzEtMzlkOS00OGFmLThkYzgtMjQ0MWU5MjFkMTVmIiwKICAgICJuYW1lIjogIk5ldyIsCiAgICAidGltZXN0YW1wIjogIjIwMjMtMDUtMjMgMDY6MDA6MDAiCiAgfQ==",
+    "isBase64Encoded": true
+}

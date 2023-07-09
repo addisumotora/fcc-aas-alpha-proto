@@ -1,0 +1,1 @@
+export { getSwaggerFileHandler } from './get-swagger';

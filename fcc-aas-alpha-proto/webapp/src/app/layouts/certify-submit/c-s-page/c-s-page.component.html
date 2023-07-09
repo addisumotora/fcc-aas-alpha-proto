@@ -1,0 +1,24 @@
+<div class="summary-container">
+  <nav class="us-flex">
+    <div class="">
+      <h1>Certify && Submit</h1>
+    </div>
+    <div>
+      <ul class="us-item">
+        <li><a>attachments</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div>
+    <p>* indicates required field</p>
+    <div class="format">
+      <h4>Certify Auction Application</h4>
+      <button class="btns-left">Help</button>
+    </div>
+    <p>bby clicking "Certify and submit" button below I certify the following </p>
+  </div>
+  <div class="item" *ngFor="let item of data">
+    <p>{{ item.id }},</p>
+    <p>{{ item.title }}</p>
+  </div>
+</div>

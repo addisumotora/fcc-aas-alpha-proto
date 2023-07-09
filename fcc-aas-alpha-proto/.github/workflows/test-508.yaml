@@ -1,0 +1,42 @@
+name: Pa11y 508 Test
+
+on:
+  workflow_call:
+    inputs:
+      region:
+        default: us-east-1
+        type: string
+      stack_name:
+        required: true
+        type: string
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+
+jobs:
+  test-508:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./webapp
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ inputs.region }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run test:pa11y $(aws cloudformation describe-stacks --region ${{ inputs.region }} --stack-name ${{ inputs.stack_name }} --query "Stacks[0].Outputs[?OutputKey=='WebEndpoint'].OutputValue" --output text);
+      - uses: actions/upload-artifact@v3
+        with:
+          name: pa11y-results
+          path: ./webapp/pa11y-ci-report/

@@ -1,0 +1,33 @@
+{
+    "extends": "../.eslintrc.json",
+    "rules": {
+        "no-console": ["error", { "allow": ["warn", "error"] }],
+        "@angular-eslint/component-selector": [
+            "error",
+            {
+              "type": "element",
+              "prefix": "aas",
+              "style": "kebab-case"
+            }
+          ],
+        "@angular-eslint/directive-selector": [
+            "error",
+            {
+              "type": "attribute",
+              "prefix": "aas",
+              "style": "camelCase"
+            }
+        ],
+        "@angular-eslint/relative-url-prefix": "error",
+        "@typescript-eslint/ban-types": [
+            "error",
+            {
+              "extendDefaults": true,
+              "types": {
+                "{}": false
+              }
+            }
+        ]
+    }
+}
+  

@@ -1,0 +1,36 @@
+@import '../../../assets/scss/uswds/_uswds-theme-color.scss';
+
+.usa-banner__header a {
+    margin-right: 32px;
+    position: absolute;
+    right: 0;
+}
+
+@media (max-width: 1023px) {
+    .usa-banner__button-text,.usa-banner__header-text{
+        font-size: 10px;
+    }
+    .usa-banner__header a {
+        margin-right: 15px;
+    }
+
+}
+
+
+.usa-banner__button {
+background-color: inherit;
+}
+
+.usa-banner__inner {
+    max-width: none;
+    margin: 0 !important;
+}
+
+.usa-banner__header {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+        margin-right: 32px;
+    }
+}

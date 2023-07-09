@@ -1,0 +1,16 @@
+{
+    "Records": [
+        {   
+            "eventName": "ObjectCreated:Put",
+            "s3": {
+                "bucket": {
+                    "name": "fcc-initial-datapipelinebucket-h3j5rreq2c0s"
+                },
+                "object": {
+                    "key": "input/shouuld-fail.csv",
+                    "size": 423
+                }
+            }
+        }
+    ]
+}

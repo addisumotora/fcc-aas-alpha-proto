@@ -1,0 +1,58 @@
+name: SonarCloud Security Scan
+
+
+on:
+  workflow_call:
+    secrets:
+      SONAR_TOKEN_LAMBDA:
+        required: true
+      SONAR_TOKEN_WEBAPP:
+        required: true
+
+jobs:          
+  sonar-scan-lambda:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./lambda
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - uses: actions/download-artifact@v3
+        with:
+          name: lambda-coverage
+          path: lambda/coverage
+      - name: SonarCloud Lambda Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: lambda
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_LAMBDA }}
+  sonar-scan-webapp:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./webapp
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - uses: actions/download-artifact@v3
+        with:
+          name: webapp-coverage
+          path: webapp/coverage
+      - name: SonarCloud Webapp Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: webapp
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_WEBAPP }}

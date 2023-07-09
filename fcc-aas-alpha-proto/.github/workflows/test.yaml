@@ -1,0 +1,55 @@
+name: Test
+
+on:
+  workflow_call:
+
+jobs:
+  test-lambda:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Tests
+        run: npm run test:coverage
+      - name: Check Code Coverage
+        uses: terencetcf/github-actions-lcov-minimum-coverage-checker@v1
+        with:
+          coverage-file: lambda/coverage/lcov.info
+          minimum-coverage: 80
+      - uses: actions/upload-artifact@v3
+        with:
+          name: lambda-coverage
+          path: lambda/coverage
+  test-webapp:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./webapp
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Tests
+        run: npm run test:coverage
+      - name: Check Code Coverage
+        uses: terencetcf/github-actions-lcov-minimum-coverage-checker@v1
+        with:
+          coverage-file: webapp/coverage/lcov.info
+          minimum-coverage: 80
+      - uses: actions/upload-artifact@v3
+        with:
+          name: webapp-coverage
+          path: webapp/coverage

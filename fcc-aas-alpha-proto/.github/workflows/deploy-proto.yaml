@@ -1,0 +1,28 @@
+name: Deploy to Proto
+
+on:
+  pull_request:
+    branches:
+      - proto
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yaml
+  scan:
+    uses: ./.github/workflows/scan.yaml
+    secrets: inherit
+    needs: test
+  deploy:
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      region: us-east-1
+      stack_name: fcc-aas-proto
+    secrets: inherit
+    needs: scan
+  test-508:
+    uses: ./.github/workflows/test-508.yaml
+    with:
+      region: us-east-1
+      stack_name: fcc-aas-proto
+    secrets: inherit
+    needs: deploy

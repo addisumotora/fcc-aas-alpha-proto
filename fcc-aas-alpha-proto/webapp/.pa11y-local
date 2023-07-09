@@ -1,0 +1,19 @@
+{
+  "defaults": {
+    "reporters": [
+      "cli",
+      [
+        "pa11y-ci-reporter-html",
+        { "destination": "./pa11y-ci-report", "includeZeroIssues": true }
+      ]
+    ],
+    "timeout": 5000,
+    "viewport": {
+        "width": 1280,
+        "height": 1024
+    }
+  },
+  "urls": [
+      "http://localhost:4200/"
+  ]
+}

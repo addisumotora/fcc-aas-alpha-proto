@@ -1,0 +1,5 @@
+{
+    "httpMethod": "PUT",
+    "path": "/item",
+    "isBase64Encoded": false
+}
