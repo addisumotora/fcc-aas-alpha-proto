@@ -23,7 +23,7 @@
     "@angular/platform-browser-dynamic": "^16.1.1",
     "@angular/router": "^16.1.1",
     "@ng-bootstrap/ng-bootstrap": "^15.0.1",
-    "@uswds/uswds": "3.2.0",
+    "@uswds/uswds": "^3.2.0",
     "aws-amplify": "^5.2.5",
     "bootstrap": "^5.0.1",
     "commander": "^9.4.1",

@@ -1,24 +1,33 @@
 <div class="summary-container">
-  <nav class="us-flex">
-    <div class="">
-      <h1>Certify && Submit</h1>
-    </div>
+  <aas-header></aas-header>
+  <hr />
+  <div class="usa-flex">
     <div>
-      <ul class="us-item">
-        <li><a>attachments</a></li>
-      </ul>
+      <div>
+        <p><i>* indicates required field</i></p>
+        <div class="format">
+          <h4>Certify Auction Application</h4>
+          <a class="usa-link">Help</a>
+        </div>
+        <p>
+          bby clicking "Certify and submit" button below I certify the following
+        </p>
+      </div>
+      <div class="item" *ngFor="let item of data">
+        <p>{{ item.id }},</p>
+        <p>{{ item.title }}</p>
+      </div>
+      <hr />
+      <aas-signature></aas-signature>
+      <hr />
+      <div class="btns">
+        <button class="usa-button">back</button>
+        <div>
+          <button class="usa-button">Summary Page</button>
+          <button class="usa-button btn">Certify & submit</button>
+        </div>
+      </div>
     </div>
-  </nav>
-  <div>
-    <p>* indicates required field</p>
-    <div class="format">
-      <h4>Certify Auction Application</h4>
-      <button class="btns-left">Help</button>
-    </div>
-    <p>bby clicking "Certify and submit" button below I certify the following </p>
-  </div>
-  <div class="item" *ngFor="let item of data">
-    <p>{{ item.id }},</p>
-    <p>{{ item.title }}</p>
+    <aas-side-nav></aas-side-nav>
   </div>
 </div>
