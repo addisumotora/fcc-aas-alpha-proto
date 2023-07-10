@@ -12,7 +12,7 @@ import { CSPageComponent } from './layouts/certify-submit/c-s-page/c-s-page.comp
     RouterModule.forRoot(
       [
         { path: '', component: LandingPageComponent, title: 'FCC - Landing Page' },
-        { path: 'summary', component: SummaryComponent, title: 'summary' },
+        { path: 'certify', component: SummaryComponent, title: 'certify and submit' },
         { path: 'cs-page', component: CSPageComponent, title: 'cs-page' },
         { path: '404', pathMatch: 'full', component: PageNotFoundComponent, title: 'FCC - Page Not Found' },
         { path: '403', component: NotAuthorizedComponent, title: 'FCC - Unauthorized' },
