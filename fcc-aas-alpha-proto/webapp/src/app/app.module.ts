@@ -18,6 +18,7 @@ import { SideNavComponent } from './layouts/certify-submit/side-nav/side-nav.com
 import { HeaderComponent } from './layouts/certify-submit/header/header.component';
 import { CertifyLeftComponent } from './layouts/certify-submit/certify-left/certify-left.component';
 import { SignatureComponent } from './layouts/certify-submit/signature/signature.component';
+import { ConformationOfSubmissionComponent } from './layouts/certify-submit/conformation-of-submission/conformation-of-submission.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SignatureComponent } from './layouts/certify-submit/signature/signature
     HeaderComponent,
     CertifyLeftComponent,
     SignatureComponent,
+    ConformationOfSubmissionComponent,
   ],
   imports: [
     BrowserModule, 
